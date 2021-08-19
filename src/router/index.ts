@@ -4,22 +4,13 @@ import HelloWorld from "../components/HelloWorld.vue";
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/",
-        name: "HelloWorld",
-        component: HelloWorld,
-    },
-    {
-        path: "/about",
-        name: "About",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () =>
-            import(/* webpackChunkName: "About" */ "../components/About.vue")
+        name: "Home",
+        component: () => import('../view/home/Home.vue'),
     }
 ];
 
 const router = createRouter({
-    history: createWebHistory(process.env.BASE_URL),
+    history: createWebHistory(),
     routes,
 });
 

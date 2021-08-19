@@ -1,15 +1,17 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3.0 + Vite" />
+  <Nav></Nav>
+  <router-view></router-view>
+  <Footer></Footer>
 </template>
 
 <script lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
 
-export default {
+export default defineComponent({
   name: 'App',
-  components: {
-    HelloWorld
+  components: { 
+    Nav: defineAsyncComponent(() => import("./components/Nav.vue")),
+    Footer: defineAsyncComponent(() => import("./components/Footer.vue"))
   }
-}
+})
 </script>
