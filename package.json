@@ -21,6 +21,8 @@
     "eslint-plugin-vue": "^7.16.0",
     "prettier": "^2.3.2",
     "typescript": "^4.3.5",
-    "vite": "^1.0.0-rc.13"
+    "vite": "^1.0.0-rc.13",
+    "less": "^4.1.1",
+    "less-loader": "^10.0.1"
   }
 }

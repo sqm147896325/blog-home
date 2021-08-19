@@ -1,5 +1,5 @@
 <template>
-    Home
+    <div class="home-main"></div>
 </template>
 
 <script lang="ts">
@@ -11,3 +11,9 @@ export default defineComponent({
   },
 })
 </script>
+
+<style lang="less" scoped>
+.home-main{
+    height: 120vh;
+}
+</style>
