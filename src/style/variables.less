@@ -1,13 +1,14 @@
 /*
  * @Author: sqm
  * @Date: 2021-03-14 00:35:01
- * @LastEditTime: 2021-03-24 16:24:07
+ * @LastEditTime: 2021-08-20 10:35:50
  * @Description: 个人后台配色方案，青紫色系
  */
 
 /**
  * @description: 背景色方案，background
  */
+
 // 主要颜色，白色略灰
 @bg-main: #f3f3f3;
 // 功能条，群青色
@@ -20,16 +21,16 @@
 @bg-space: #a1a3a6;
 
 /**
- * @description: 文字颜色方案，color 
- */
+* @description: 文字颜色方案，color 
+*/
 // 三种基础颜色
 @c-black: #303133;
 @c-gray: #606266;
 @c-white: #FFFFFF;
 
 /**
- * @description: 文字大小方法，font-size
- */
+* @description: 文字大小方法，font-size
+*/
 // 大标题
 @fz-big-title: 56px;
 // 标题
@@ -46,3 +47,23 @@
 @fc-warning: #E6A23C;
 @fc-danger: #F56C6C;
 @fc-info: #909399;
+:export{
+    bg-main: @bg-main;
+    bg-bar: @bg-bar;
+    bg-fill: @bg-fill;
+    bg-other: @bg-other;
+    bg-space: @bg-space;
+    c-black: @c-black;
+    c-gray: @c-gray;
+    c-white: @c-white;
+    fz-big-title: @fz-big-title;
+    fz-title: @fz-title;
+    fz-big: @fz-big;
+    fz-normal: @fz-normal;
+    fz-small: @fz-small;
+    fc-success: @fc-success;
+    fc-warning: @fc-warning;
+    fc-danger: @fc-danger;
+    fc-info: @fc-info;
+}
+
