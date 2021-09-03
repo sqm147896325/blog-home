@@ -1,16 +1,16 @@
 <template>
-    <div :class=" titleTop ? 'title-top' : 'title-down'" class="nav-title">
-      <div class="title-logo">LS</div>
-      <div class="title-menu">
-        <div v-for="(item, index) in [1,2,3]" :key="index" class="menu-item">
-          <router-link to="/">item{{item}}</router-link>
-        </div>
+  <div ref="title" :class=" titleTop ? 'title-top' : 'title-down'" class="nav-title">
+    <div class="title-logo">LS</div>
+    <div class="title-menu">
+      <div v-for="(item, index) in [1,2,3]" :key="index" class="menu-item">
+        <router-link to="/">item{{item}}</router-link>
       </div>
     </div>
-    <div class="nav-bg">
-      <div class="bg-typewriter">{{typewriterData}}<span class="typewriter-twinkle">|</span></div>
-      <div class="bg-button">按钮</div>
-    </div>
+  </div>
+  <div class="nav-bg">
+    <div class="bg-typewriter">{{typewriterData}}<span class="typewriter-twinkle">|</span></div>
+    <div class="bg-button" @click="ready">开始阅读</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -21,9 +21,24 @@ export default defineComponent({
     /** 需要动态渲染的数据 */
     let titleTop = ref(true)  // 标题样式控制标题
     let typewriterData = ref('')  // 打字机显示绑定
+
     /** 不需要动态渲染德数据 */
     let typewriterText:string = 'Welcome to my world!'  // 需要打字效果的文字数组
 
+    /** 虚拟dom */
+    const title:any = ref(null) // 
+
+    /** 方法 */
+    // 准备阅读按钮回调
+    const ready = () => {
+      window.scrollTo({
+        top: window.innerHeight - title.value.clientHeight,
+        behavior: 'smooth'
+      });
+      console.log('ready', title)
+    }
+
+    /** 生命周期 */
     onMounted(() => {
       window.addEventListener("scroll", () => {
         if(window.scrollY < 10){
@@ -39,7 +54,9 @@ export default defineComponent({
 
     return {
       titleTop,
-      typewriterData
+      typewriterData,
+      ready,
+      title
     }
   }
 })
@@ -126,6 +143,16 @@ a{
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+
+  // 视差
+  /* 不重复填充 */
+  background-repeat: no-repeat;
+  /* 全部覆盖 */
+  background-size: cover;
+  /* 背景位置 */
+  background-position: center;
+  /* 背景图片相对滚动时的位置 */
+  background-attachment: fixed;
   .bg-typewriter{
     color: #FFF;
     margin: 90px 0;
@@ -141,6 +168,8 @@ a{
     border: 1px #FFF solid;
     border-radius: 20px;
     color: #FFF;
+    transition: all 0.3s ease;
+    background: rgba(0, 0, 0, 0.15);
     &:hover{
       background: @fc-danger;
       border: 1px rgba(255, 255, 255, 0) solid;
