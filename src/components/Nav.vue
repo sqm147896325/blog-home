@@ -14,6 +14,7 @@
 </template>
 
 <script lang="ts">
+// Composition API风格
 import { defineComponent, reactive, ref,  onMounted } from 'vue'
 import typewriter from '@/utils/typewriter'
 export default defineComponent({
@@ -154,10 +155,15 @@ a{
   /* 背景图片相对滚动时的位置 */
   background-attachment: fixed;
   .bg-typewriter{
+    width: 70%;
     color: #FFF;
-    margin: 90px 0;
+    margin: 45px 0;
+    padding: 35px 0;
     text-align: center;
     font-size: @fz-title;
+    background: rgba(51, 51, 51, 0.7);
+    border-radius: 100px 0 100px 0;
+    box-shadow: 0 1px 2px rgba(0, 0, 0);
     .typewriter-twinkle{
       animation: blink 1s infinite normal;
     }
@@ -169,9 +175,9 @@ a{
     border-radius: 20px;
     color: #FFF;
     transition: all 0.3s ease;
-    background: rgba(0, 0, 0, 0.15);
+    background: rgba(33, 33, 33, 0.45);
     &:hover{
-      background: @fc-danger;
+      background: rgba(0, 0, 0, 0.8);
       border: 1px rgba(255, 255, 255, 0) solid;
     }
   }
