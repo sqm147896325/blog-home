@@ -2,6 +2,7 @@
   <Nav></Nav>
   <router-view></router-view>
   <Footer></Footer>
+  <ToUp></ToUp>
 </template>
 
 <script lang="ts">
@@ -11,7 +12,8 @@ export default defineComponent({
   name: 'App',
   components: { 
     Nav: defineAsyncComponent(() => import("./components/Nav.vue")),
-    Footer: defineAsyncComponent(() => import("./components/Footer.vue"))
+    Footer: defineAsyncComponent(() => import("./components/Footer.vue")),
+    ToUp: defineAsyncComponent(() => import("./components/ToUp.vue"))
   }
 })
 </script>
