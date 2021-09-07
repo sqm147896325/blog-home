@@ -11,9 +11,9 @@ import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue"
 export default defineComponent({
   name: 'App',
   components: { 
-    Nav: defineAsyncComponent(() => import("./components/Nav.vue")),
-    Footer: defineAsyncComponent(() => import("./components/Footer.vue")),
-    ToUp: defineAsyncComponent(() => import("./components/ToUp.vue"))
+    Nav: defineAsyncComponent(() => import('./components/Nav.vue')),
+    Footer: defineAsyncComponent(() => import('./components/Footer.vue')),
+    ToUp: defineAsyncComponent(() => import('./components/ToUp.vue'))
   }
 })
 </script>

@@ -1,9 +1,14 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import { createSvg } from './src/assets/icons/index'
 import path from "path";
  
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    // svg 引入
+    createSvg('./src/assets/icons/svg/')
+  ],
   base: "./",
   resolve: {
     alias: {

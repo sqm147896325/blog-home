@@ -9,6 +9,11 @@
           </div>
         </div>
       </div>
+      <div class="home-paging">
+        <svg-icon name="paging-left" class="paging-left"></svg-icon>
+        <div class="paging-number">1/2</div>
+        <svg-icon name="paging-right" class="paging-right"></svg-icon>
+      </div>
     </div>
 </template>
 
@@ -101,6 +106,41 @@ export default defineComponent({
     }
     .item-no{
       opacity: 1;
+    }
+  }
+  .home-paging{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .paging-button {
+      height: 40px;
+      line-height: 40px;
+      width: 40px;
+      padding: 10px;
+      border-radius: 50%;
+      text-align: center;
+      color: #333;
+      box-shadow: 0px 3px 10px rgba(51, 51, 51, 0.8);
+      background: rgba(51, 51, 51, 0.2);
+      transition: all 0.3s ease;
+      &:hover{
+        transform: scale(1.1);
+      }
+    }
+    .paging-left{
+      .paging-button()
+    }
+    .paging-right{
+      .paging-button()
+    }
+    .paging-number{
+      font-size: @fz-big + 5px;
+      line-height: 50px + 10px;
+      font-weight: bold;
+      height: 50px;
+      color: #333;
     }
   }
 }
