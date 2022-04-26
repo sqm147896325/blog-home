@@ -20,9 +20,13 @@
 <script lang="ts">
 // Option API风格
 import { defineComponent } from "vue";
+import { blogList } from '@/api/index'
 interface dataType {
   title: string
-  blogList: object[]
+  blogList: object[],
+  pageNum: 1,
+  pageSize: 12,
+  totle: 12
 }
 export default defineComponent({
   data() {
@@ -41,10 +45,12 @@ export default defineComponent({
         {name:1, value:1, show: 0},
         {name:1, value:1, show: 0},
         {name:1, value:1, show: 0}
-      ]
+      ],
+      pageNum: 1
     } as dataType
   },
   mounted() {
+    this.init()
     window.addEventListener("scroll", () => {
       this.blogList.map((e,i) => {
         const item:any = this.$refs['item'+i]
@@ -59,7 +65,16 @@ export default defineComponent({
     });
   },
   methods: {
-
+    init() {
+      blogList({
+        page: this.pageNum,
+        pagesize: 12,
+        key: '',
+        query: ''
+      }).then(res => {
+        this.blogList = res.dataInfo.rows
+      })
+    }
   }
 })
 </script>
@@ -95,7 +110,7 @@ export default defineComponent({
         height: 30%;
       }
       &:hover{
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
     }
     .item-show{
