@@ -3,16 +3,22 @@
       <div class="home-title">{{title}}</div>
       <div class="home-list">
         <div :class="item.show ? item.show == 2 ? 'item-show' : 'item-half' : 'item-no'" :ref="'item' + index" v-for="(item,index) in blogList" :key="index" class="list-item">
-          <div class="item-img"></div>
+          <div class="item-img">
+            <img class="img-item" :src="`https://img.xjh.me/random_img.php?return=302&random=${pageNum}-${index}`" alt="图片加载失败">
+          </div>
           <div class="item-content">
-            <!-- {{item.name}} -->
+            <div class="content-title">{{item.title}}</div>
+            <!-- <div class="content-row">
+              <div class="row-left">{{formatterTime(item.created_at)}}</div>
+              <div class="row-right">{{item.keyword}}</div>
+            </div> -->
           </div>
         </div>
       </div>
       <div class="home-paging">
-        <svg-icon name="paging-left" class="paging-left"></svg-icon>
-        <div class="paging-number">1/2</div>
-        <svg-icon name="paging-right" class="paging-right"></svg-icon>
+        <svg-icon name="paging-left" @click="pageTurn(-1)" class="paging-left"></svg-icon>
+        <div class="paging-number">{{pageNum}}/{{totle}}</div>
+        <svg-icon name="paging-right" @click="pageTurn(1)" class="paging-right"></svg-icon>
       </div>
     </div>
 </template>
@@ -24,31 +30,22 @@ import { blogList } from '@/api/index'
 interface dataType {
   title: string
   blogList: object[],
-  pageNum: 1,
-  pageSize: 12,
-  totle: 12
+  pageNum: Number,
+  pageSize: Number,
+  totle: Number
 }
 export default defineComponent({
+
   data() {
      return {
-      title: '模块标题',
-      blogList: [
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0},
-        {name:1, value:1, show: 0}
-      ],
-      pageNum: 1
+      title: '博客列表',
+      blogList: [],
+      pageNum: 1,
+      pageSize: 12,
+      totle: 1
     } as dataType
   },
+
   mounted() {
     this.init()
     window.addEventListener("scroll", () => {
@@ -64,18 +61,40 @@ export default defineComponent({
       })
     });
   },
+
   methods: {
+
     init() {
+      this.queryBlog()
+    },
+
+    queryBlog() {
       blogList({
         page: this.pageNum,
         pagesize: 12,
-        key: '',
+        key: 'id',
         query: ''
       }).then(res => {
+        console.log(res)
         this.blogList = res.dataInfo.rows
+        this.totle = Math.ceil(res.dataInfo.count / 12)
       })
+    },
+
+    pageTurn(op: any) {
+      if ( op + this.pageNum > this.totle || op + this.pageNum < 1 ) {
+        return false
+      }
+      this.pageNum += op
+      this.queryBlog()
+    },
+
+    formatterTime(value: String) {
+      return value.split('T')[0]
     }
+  
   }
+
 })
 </script>
 
@@ -97,7 +116,7 @@ export default defineComponent({
     .list-item{
       width: 300px;
       height: 200px;
-      margin-bottom: 30px;
+      margin: 0 10px 30px 10px;
       transition: opacity 0.8s ease, transform 0.5s ease;
       border-radius: 10px;
       box-shadow: 1px 1px 10px rgba(51, 51, 51, 0.6);
@@ -105,9 +124,30 @@ export default defineComponent({
         height: 70%;
         background: rgba(51, 51, 51, 0.6);
         border-radius: 10px 10px 0 0;
+        .img-item{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
       .item-content{
+        cursor: pointer;
         height: 30%;
+        display: flex;
+        flex-direction: column;
+        // justify-content: space-between;
+        justify-content: center;
+        padding: 10px;
+        background-image: linear-gradient(#eee, #fff);
+        .content-title{
+          font-size: 16px;
+          line-height: 16px;
+        }
+        .content-row{
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
       }
       &:hover{
         transform: scale(1.05);

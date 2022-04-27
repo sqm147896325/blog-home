@@ -6,11 +6,6 @@ declare module '*.vue' {
   export default componentOptions
 }
 
-// 使 import.meta.env 不报错
-interface ImportMeta {
-  env: Record<any>
-}
-
 // 使axios包不报错
 import * as axios from 'axios'
 declare module 'axios' {

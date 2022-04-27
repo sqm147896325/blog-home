@@ -4,11 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "node node_modules/esbuild/install.js && vite",
+    "dev:prod": "node node_modules/esbuild/install.js && vite --mode production",
     "build": "vite build"
   },
   "dependencies": {
     "axios": "^0.26.1",
     "element-plus": "^1.0.2-beta.71",
+    "marked": "^4.0.14",
     "vue": "^3.2.4",
     "vue-router": "^4.0.11",
     "vuex": "^4.0.2"
@@ -25,7 +27,6 @@
     "eslint-plugin-vue": "^7.16.0",
     "fs": "^0.0.1-security",
     "less": "^4.1.1",
-    "less-loader": "^10.0.1",
     "prettier": "^2.3.2",
     "svg-sprite-loader": "^6.0.9",
     "typescript": "^4.3.5",
