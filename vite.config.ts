@@ -21,6 +21,7 @@ export default ({ mode }) => {
       outDir: 'dist',
     },
     css: {
+      modules: false,
       preprocessorOptions: {
         less: {
           additionalData: '@import "./src/style/index.less";'
@@ -37,7 +38,7 @@ export default ({ mode }) => {
           target: loadEnv(mode, process.cwd()).VITE_APP_CERT_CLIENT_BASE_API, // 后台接口
           changeOrigin: true,
           secure: false, // 如果是https接口，需要配置这个参数
-          // ws: true, //websocket支持
+          ws: true, //websocket支持
           rewrite: (path) => path.replace(/^\/api/, ''),
         },
       },

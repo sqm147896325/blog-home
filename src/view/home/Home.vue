@@ -26,7 +26,7 @@
 <script lang="ts">
 // Option API风格
 import { defineComponent } from "vue";
-import { blogList } from '@/api/index'
+import { blogList } from '@/api/index';
 interface dataType {
   title: string
   blogList: object[],
@@ -35,7 +35,7 @@ interface dataType {
   totle: Number
 }
 export default defineComponent({
-
+  name: 'Home',
   data() {
      return {
       title: '博客列表',

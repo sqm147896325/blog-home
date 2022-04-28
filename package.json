@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "node node_modules/esbuild/install.js && vite",
-    "dev:prod": "node node_modules/esbuild/install.js && vite --mode production",
+    "dev:cloud": "node node_modules/esbuild/install.js && vite --mode cloud",
     "build": "vite build"
   },
   "dependencies": {
