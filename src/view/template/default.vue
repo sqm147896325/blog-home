@@ -17,7 +17,7 @@ import { defineComponent } from "vue";
 import * as marked from 'marked';
 import { getBlog } from '@/api/index';
 import parseDir from '@/utils/parseDir';
-import MdDir from './components/MdDir.vue'
+import MdDir from './components/MdDir.vue';
 
 interface dataType {
   id: String,
@@ -25,7 +25,6 @@ interface dataType {
   dir: Object[]
 }
 export default defineComponent({
-
   components: { MdDir },
 
   data() {

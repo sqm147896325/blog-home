@@ -1,8 +1,8 @@
 <template>
   <div v-for="(item, index) in dir" :key="index" class="dir-list">
-    <div class="dir-title" :class="firstDir ? 'first-title' : ''" @mouseenter="hover(true, index)" @mouseleave="hover(false, index)">{{ item.title }}</div>
+    <div class="dir-title" :class="firstDir ? 'first-title' : ''" @mouseenter="hover(true, index)" @mouseleave="hover(false)">{{ item.title }}</div>
     <transition name="dir">
-      <div v-if="item.children.length !== 0" v-show="hoverFlag(index)" @mouseenter="hover(true, index)" @mouseleave="hover(false, index)" class="dir-children">
+      <div v-if="item.children.length !== 0" v-show="hoverFlag(index)" @mouseenter="hover(true, index)" @mouseleave="hover(false)" class="dir-children">
         <MdDir :dir="item.children"/>
       </div>
     </transition>
