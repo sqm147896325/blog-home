@@ -2,7 +2,14 @@
     <div class="home-main">
       <div class="home-title">{{title}}</div>
       <div class="home-list">
-        <div :class="item.show ? item.show == 2 ? 'item-show' : 'item-half' : 'item-no'" :ref="'item' + index" v-for="(item,index) in blogList" :key="index" class="list-item">
+        <div
+          class="list-item"
+          :class="item.show ? item.show == 2 ? 'item-show' : 'item-half' : 'item-no'"
+          :ref="'item' + index"
+          v-for="(item,index) in blogList"
+          :key="index"
+          @click="toBlog(item.id)"
+        >
           <div class="item-img">
             <img class="img-item" :src="`https://img.xjh.me/random_img.php?return=302&random=${pageNum}-${index}`" alt="图片加载失败">
           </div>
@@ -48,7 +55,20 @@ export default defineComponent({
 
   mounted() {
     this.init()
-    window.addEventListener("scroll", () => {
+    window.addEventListener('scroll', this.scroll);
+  },
+
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.scroll)
+  },
+
+  methods: {
+
+    init() {
+      this.queryBlog()
+    },
+
+    scroll() {
       this.blogList.map((e,i) => {
         const item:any = this.$refs['item'+i]
         if ((document.documentElement.scrollTop + document.documentElement.clientHeight - 200) > item.offsetTop) {
@@ -59,13 +79,6 @@ export default defineComponent({
           (this.blogList[i] as any).show = 2
         }
       })
-    });
-  },
-
-  methods: {
-
-    init() {
-      this.queryBlog()
     },
 
     queryBlog() {
@@ -79,6 +92,10 @@ export default defineComponent({
         this.blogList = res.dataInfo.rows
         this.totle = Math.ceil(res.dataInfo.count / 12)
       })
+    },
+
+    toBlog(id: Number) {
+      this.$router.push(`/blog/${id}`)
     },
 
     pageTurn(op: any) {

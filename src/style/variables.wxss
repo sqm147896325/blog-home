@@ -1,0 +1,34 @@
+/*
+ * @Author: sqm
+ * @Date: 2021-03-14 00:35:01
+ * @LastEditTime: 2021-08-20 10:35:50
+ * @Description: 个人后台配色方案，青紫色系
+ */
+/**
+ * @description: 背景色方案，background
+ */
+/**
+* @description: 文字颜色方案，color 
+*/
+/**
+* @description: 文字大小方法，font-size
+*/
+:export {
+  bg-main: #f3f3f3;
+  bg-bar: #4e72b8;
+  bg-fill: #9b95c9;
+  bg-other: #6f60aa;
+  bg-space: #a1a3a6;
+  c-black: #303133;
+  c-gray: #606266;
+  c-white: #FFFFFF;
+  fz-big-title: 56px;
+  fz-title: 36px;
+  fz-big: 16px;
+  fz-normal: 14px;
+  fz-small: 12px;
+  fc-success: #67C23A;
+  fc-warning: #E6A23C;
+  fc-danger: #F56C6C;
+  fc-info: #909399;
+}

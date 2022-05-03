@@ -1,5 +1,5 @@
 <template>
-  <div ref="title" :class=" titleTop ? 'title-top' : 'title-down'" class="nav-title">
+  <div ref="title" :class=" titleTop && $route.path === '/' ? 'title-top' : 'title-down'" class="nav-title">
     <div class="title-logo">LS</div>
     <div class="title-menu">
       <div v-for="(item, index) in [1,2,3]" :key="index" class="menu-item">
@@ -7,7 +7,7 @@
       </div>
     </div>
   </div>
-  <div class="nav-bg">
+  <div v-if="$route.path === '/'" class="nav-bg">
     <div class="bg-typewriter">{{typewriterData}}<span class="typewriter-twinkle">|</span></div>
     <div class="bg-button" @click="ready">开始阅读</div>
   </div>

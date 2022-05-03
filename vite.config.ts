@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import { createSvg } from './src/assets/icons/index'
 import path from 'path';
-import { loadEnv } from 'vite'
+import { loadEnv } from 'vite';
  
 export default ({ mode }) => {
   return defineConfig({
@@ -30,7 +30,7 @@ export default ({ mode }) => {
     },
     server: {
       https: false, // 是否开启 https
-      open: true, // 是否自动在浏览器打开
+      open: false, // 是否自动在浏览器打开
       port: 3000, // 端口号
       host: '0.0.0.0',
       proxy: {
