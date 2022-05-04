@@ -1,18 +1,22 @@
 /* 
     处理Marked解析出的dom元素得到标题数组
 */
+
 export default (dom: HTMLElement) => {
-    const node = dom.childNodes
+    const node = dom.children
     const arr:treeTitleObject[] = []
-    node.forEach((e) => {
+
+    for (let index = 0; index < node.length; index++) {
+        const e = node[index];
         if (['H1','H2','H3','H4','H5','H6',].includes(e.nodeName)){
-            arr.push({ level: Number(e.nodeName.replace('H', '')), title: e.textContent, children: new Array})
-        }
-    })
+            arr.push({ id: e.id, level: Number(e.nodeName.replace('H', '')), title: e.textContent, children: new Array})
+        }   
+    }
     return toTree(arr)
 }
 
 interface treeTitleObject {
+    id: String,
     level: Number,
     title: String | null,
     children: treeTitleObject[],

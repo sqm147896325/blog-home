@@ -13,11 +13,10 @@
 
 <script lang="ts">
 // Option API风格
-import { defineComponent } from "vue";
+import { defineComponent, defineAsyncComponent } from "vue";
 import * as marked from 'marked';
 import { getBlog } from '@/api/index';
 import parseDir from '@/utils/parseDir';
-import MdDir from './components/MdDir.vue';
 
 interface dataType {
   id: String,
@@ -25,7 +24,7 @@ interface dataType {
   dir: Object[]
 }
 export default defineComponent({
-  components: { MdDir },
+  components: { MdDir: defineAsyncComponent( () => import('./components/MdDir.vue') ) },
 
   data() {
     return {
@@ -42,14 +41,27 @@ export default defineComponent({
   methods: {
 
     init() {
+
+      // 自定义标题id
+      let rendererMD = new marked.marked.Renderer();
+      let idText = 0
+      rendererMD.heading = (text, level) => {
+          // let idText = btoa(encodeURIComponent(text)) 
+          return `<h${level} id="title-${idText++}">${text}</h${level}>`;
+      }
+
       getBlog({id: this.id}).then(res => {
-        this.blog = marked.marked(res.dataInfo.content)
+        this.blog = marked.marked(res.dataInfo.content, { renderer: rendererMD })
         this.$nextTick(() => {
           this.dir = parseDir(this.$refs.blog as HTMLElement)
-          console.log(this.dir)
+          // 初始进入页面进行hash锚点定位
+          let temp = window.location.hash
+          window.location.hash = ''
+          window.location.hash = temp
         })
       })
     }
+
   }
 
 })
