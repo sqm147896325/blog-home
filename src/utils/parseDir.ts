@@ -9,17 +9,10 @@ export default (dom: HTMLElement) => {
     for (let index = 0; index < node.length; index++) {
         const e = node[index];
         if (['H1','H2','H3','H4','H5','H6',].includes(e.nodeName)){
-            arr.push({ id: e.id, level: Number(e.nodeName.replace('H', '')), title: e.textContent, children: new Array})
+            arr.push({ id: e.id, level: Number(e.nodeName.replace('H', '')), title: e.textContent, el: e, children: []})
         }   
     }
     return toTree(arr)
-}
-
-interface treeTitleObject {
-    id: String,
-    level: Number,
-    title: String | null,
-    children: treeTitleObject[],
 }
 
 function toTree(arr: treeTitleObject[]) {

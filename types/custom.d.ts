@@ -1,7 +1,8 @@
 
 interface treeTitleObject {
-  id: String,
+  id: string,
   level: Number,
   title: String | null,
+  el: Element<HTMLElement>,
   children: treeTitleObject[],
 }

@@ -21,10 +21,10 @@ import parseDir from '@/utils/parseDir';
 interface dataType {
   id: String,
   blog: String,
-  dir: Object[]
+  dir: Array<treeTitleObject>
 }
 export default defineComponent({
-  components: { MdDir: defineAsyncComponent( () => import('./components/MdDir.vue') ) },
+  components: { MdDir: defineAsyncComponent(() => import('./components/MdDir.vue')) },
 
   data() {
     return {
@@ -38,15 +38,21 @@ export default defineComponent({
     this.init()
   },
 
+  watch: {
+    '$route.query.id': {
+      handler (newValue) {
+        this.locationEle(newValue)
+      }
+    }
+  },
+
   methods: {
 
     init() {
-
       // 自定义标题id
       let rendererMD = new marked.marked.Renderer();
       let idText = 0
       rendererMD.heading = (text, level) => {
-          // let idText = btoa(encodeURIComponent(text)) 
           return `<h${level} id="title-${idText++}">${text}</h${level}>`;
       }
 
@@ -54,11 +60,20 @@ export default defineComponent({
         this.blog = marked.marked(res.dataInfo.content, { renderer: rendererMD })
         this.$nextTick(() => {
           this.dir = parseDir(this.$refs.blog as HTMLElement)
-          // 初始进入页面进行hash锚点定位
-          let temp = window.location.hash
-          window.location.hash = ''
-          window.location.hash = temp
+          if (this.$route.query.id) {
+            this.locationEle(this.$route.query.id)
+          } else {
+            window.scrollTo(0, 0)
+          }
         })
+      })
+    },
+
+    locationEle(newValue: any) {
+      const el = document.getElementById(newValue)
+      window.scrollTo({ 
+        top: (el?.offsetTop || 0) - 50,
+        behavior: "smooth" 
       })
     }
 
@@ -80,7 +95,7 @@ export default defineComponent({
   border-radius: 10px;
   background: #fff;
   width: 100%;
-  padding: 10px 3vw;
+  padding: 20px 3vw;
   .article-content{
     width: 100%;
     word-break: break-all;
@@ -95,6 +110,12 @@ export default defineComponent({
     padding: 20px;
     border-radius: 10px;
     background: #fff;
+    max-height: 70vh;
+    overflow-y: auto;
   }
 }
+// &:deep([id^="title"]) {
+//   padding-top: 60px;
+//   margin-top: -60px;
+// }
 </style>

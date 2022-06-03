@@ -11,15 +11,27 @@
 
 <script lang="ts">
 // Option API风格
-import { defineComponent, PropType  } from "vue";
+import { defineComponent, PropType } from "vue";
 
 interface dataType {
   mouseHover: Boolean,
   chooseIndex: String
 }
-
 export default defineComponent({
   name: 'MdDir',
+  props: {
+    dir: {
+      // ts 中 type 定义要规范，Array 不要写成 []
+      type: Array as PropType<treeTitleObject[]>,
+      default: () => {
+        return []
+      }
+    },
+    firstDir: {
+      type: Boolean,
+      default: false
+    }
+  },
   computed: {
     hoverFlag() {
       return (index: String) => {
@@ -33,16 +45,6 @@ export default defineComponent({
         return (this.mouseHover && index === this.chooseIndex) || this.firstDir || existFlag
       }
     },
-  },
-  props: {
-    dir: {
-      type: [] as PropType<treeTitleObject[]>,
-      default: []
-    },
-    firstDir: {
-      type: Boolean,
-      default: false
-    }
   },
   data() {
     return {
@@ -60,8 +62,10 @@ export default defineComponent({
       this.chooseIndex = index
     },
 
-    herfHash(item: any) {
-      window.location.hash = item.id
+    herfHash(item: treeTitleObject) {
+      // 这里不使用hash定位使用query传参定位，query更容易控制
+      // window.location.hash = '#' + item.id
+      this.$router.replace({query: { id: item.id }})
     }
   }
 
