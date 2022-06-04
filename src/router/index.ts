@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    history: import.meta.env.VITE_APP_ENV === 'production' ? createWebHistory('/page/home') : createWebHistory(),
     routes,
 });
 

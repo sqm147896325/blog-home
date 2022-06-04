@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node node_modules/esbuild/install.js && vite",
     "dev:cloud": "node node_modules/esbuild/install.js && vite --mode cloud",
-    "build": "vite build"
+    "build": "vite build --base=/page/home/ --mode production"
   },
   "dependencies": {
     "axios": "^0.26.1",
