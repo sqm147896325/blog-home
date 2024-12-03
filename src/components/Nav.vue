@@ -1,5 +1,5 @@
 <template>
-  <div ref="title" :class=" titleTop && $route.path === '/' ? 'title-top' : 'title-down'" class="nav-title">
+  <div ref="title" :class="titleTop && $route.path === '/' ? 'title-top' : 'title-down'" class="nav-title">
     <div class="title-logo">LS</div>
     <div class="title-menu">
       <div v-for="(item, index) in [1,2,3]" :key="index" class="menu-item">
@@ -13,54 +13,55 @@
   </div>
 </template>
 
-<script lang="ts">
-// Composition API风格
-import { defineComponent, reactive, ref,  onMounted } from 'vue'
+<script lang="ts" setup>
+import { ref,  onMounted, Ref, onUnmounted } from 'vue'
+import { emitter, EmitterKey } from '@/utils/bus';
 import typewriter from '@/utils/typewriter'
-export default defineComponent({
-  setup() {
-    /** 需要动态渲染的数据 */
-    let titleTop = ref(true)  // 标题样式控制标题
-    let typewriterData = ref('')  // 打字机显示绑定
 
-    /** 不需要动态渲染德数据 */
-    let typewriterText:string = 'Welcome to my world!'  // 需要打字效果的文字数组
+/** 需要动态渲染的数据 */
+let titleTop:Ref<boolean> = ref(true)  // 标题样式控制标题
+let typewriterData:Ref<string> = ref('')  // 打字机显示绑定
 
-    /** 虚拟dom */
-    const title:any = ref(null) // 
+/** 不需要动态渲染德数据 */
+let typewriterText:string = 'Welcome to my world!'  // 需要打字效果的文字数组
 
-    /** 方法 */
-    // 准备阅读按钮回调
-    const ready = () => {
-      window.scrollTo({
-        top: window.innerHeight - title.value.clientHeight,
-        behavior: 'smooth'
-      });
-      console.log('ready', title)
-    }
-
-    /** 生命周期 */
-    onMounted(() => {
-      window.addEventListener("scroll", () => {
-        if(window.scrollY < 10){
-          titleTop.value = true
-        } else {
-          titleTop.value = false
-        }
-      });
-      typewriter(typewriterText, 50, 1000, (e) => {
-        typewriterData.value = e
-      })
-    });
-
-    return {
-      titleTop,
-      typewriterData,
-      ready,
-      title
-    }
+/* 页面滑动 */
+const title:Ref<Element|null> = ref(null) // 
+const ready = () => {
+  if (!title.value) {
+    return false
   }
+  window.scrollTo({
+    top: window.innerHeight - title.value.clientHeight,
+    behavior: 'smooth'
+  });
+  console.log('ready', title)
+}
+
+/* 是否显示标题 */
+const showTitle = () => {
+  if(window.scrollY < 10){
+    titleTop.value = true
+  } else {
+    titleTop.value = false
+  }
+}
+
+/** 生命周期 */
+onMounted(() => {
+  window.addEventListener("scroll", showTitle);
+  // 打字机效果
+  typewriter(typewriterText, 50, 1000, (e) => {
+    typewriterData.value = e
+  })
+  emitter.on(EmitterKey.HomePageTurn, ready)
+});
+onUnmounted(() => {
+  window.removeEventListener("scroll", showTitle);
+  emitter.off(EmitterKey.HomePageTurn, ready)
 })
+
+defineExpose({ ready })
 </script>
 
 <style lang="less" scoped>

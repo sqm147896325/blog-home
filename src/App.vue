@@ -1,5 +1,5 @@
 <template>
-  <Nav></Nav>
+  <Nav ref="nav"></Nav>
   <router-view v-slot="{ Component }">
     <keep-alive>
       <component :is="Component" :key="$route.name" v-if="$route.meta?.keepAlive"/>
@@ -10,17 +10,10 @@
   <ToUp></ToUp>
 </template>
 
-<script lang="ts">
-import { defineComponent, defineAsyncComponent, reactive, onMounted } from "vue";
-
-export default defineComponent({
-  name: 'App',
-  components: { 
-    Nav: defineAsyncComponent(() => import('./components/Nav.vue')),
-    Footer: defineAsyncComponent(() => import('./components/Footer.vue')),
-    ToUp: defineAsyncComponent(() => import('./components/ToUp.vue'))
-  }
-})
+<script lang="ts" setup>
+import Nav from './components/Nav.vue'
+import Footer from './components/Footer.vue'
+import ToUp from './components/ToUp.vue'
 </script>
 
 <style lang="less" scoped>

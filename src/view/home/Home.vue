@@ -11,7 +11,7 @@
           @click="toBlog(item.id)"
         >
           <div class="item-img">
-            <img class="img-item" :src="`https://img.xjh.me/random_img.php?return=302&random=${pageNum}-${index}`" alt="图片加载失败">
+            <MadderImage :src="item.imgUrl" />
           </div>
           <div class="item-content">
             <div class="content-title">{{item.title}}</div>
@@ -31,12 +31,22 @@
 </template>
 
 <script lang="ts">
+type BlogItem = {
+  show: number
+  id: number
+  title: string
+  imgUrl: string
+  keyword: string
+  created_at: string
+}
 // Option API风格
 import { defineComponent } from "vue";
+import { emitter, EmitterKey } from '@/utils/bus';
 import { blogList } from '@/api/index';
+import MadderImage from '@/components/MadderImage/index.vue'
 interface dataType {
   title: string
-  blogList: object[],
+  blogList: BlogItem[],
   pageNum: Number,
   pageSize: Number,
   totle: Number
@@ -51,6 +61,10 @@ export default defineComponent({
       pageSize: 12,
       totle: 1
     } as dataType
+  },
+
+  components: {
+    MadderImage
   },
 
   mounted() {
@@ -69,27 +83,35 @@ export default defineComponent({
     },
 
     scroll() {
-      this.blogList.map((e,i) => {
-        const item:any = this.$refs['item'+i]
-        if ((document.documentElement.scrollTop + document.documentElement.clientHeight - 200) > item.offsetTop) {
-          (this.blogList[i] as any).show = 0
-        } else if((document.documentElement.scrollTop + document.documentElement.clientHeight - 50) > item.offsetTop) {
-          (this.blogList[i] as any).show = 1
+      this.blogList.map((blogItem: BlogItem, i) => {
+        let domItem:HTMLElement = this.$refs['item'+i] as HTMLElement
+        if (Array.isArray(domItem)){
+          domItem = domItem[0]
+        }
+
+        if ((document.documentElement.scrollTop + document.documentElement.clientHeight - 200) > domItem.offsetTop) {
+          blogItem.show = 0
+        } else if((document.documentElement.scrollTop + document.documentElement.clientHeight - 50) > domItem.offsetTop) {
+          blogItem.show = 1
         } else {
-          (this.blogList[i] as any).show = 2
+          blogItem.show = 2
         }
       })
     },
 
-    queryBlog() {
-      blogList({
+    async queryBlog() {
+      await blogList({
         page: this.pageNum,
         pagesize: 12,
         key: 'id',
         query: ''
       }).then(res => {
-        console.log(res)
-        this.blogList = res.dataInfo.rows
+        this.blogList = res.dataInfo.rows.map((blogItem: BlogItem, i: number) => {
+          if (!blogItem.imgUrl) {
+            blogItem.imgUrl = `https://img.xjh.me/random_img.php?return=302&random=${this.pageNum}-${i}-${new Date().getTime()}`
+          }
+          return blogItem
+        })
         this.totle = Math.ceil(res.dataInfo.count / 12)
       })
     },
@@ -98,12 +120,14 @@ export default defineComponent({
       this.$router.push(`/blog/${id}`)
     },
 
-    pageTurn(op: any) {
+    async pageTurn(op: any) {
       if ( op + this.pageNum > this.totle || op + this.pageNum < 1 ) {
         return false
       }
       this.pageNum += op
-      this.queryBlog()
+      await this.queryBlog()
+      emitter.emit(EmitterKey.HomePageTurn, true)
+
     },
 
     formatterTime(value: String) {
@@ -116,6 +140,11 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
+img[src=""],img:not([src]){
+    background: #000;
+    background-size:100% 100% ;
+}
+
 .home-main{
   padding: 0 10vw;
   display: flex;
@@ -141,11 +170,6 @@ export default defineComponent({
         height: 70%;
         background: rgba(51, 51, 51, 0.6);
         border-radius: 10px 10px 0 0;
-        .img-item{
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
       }
       .item-content{
         cursor: pointer;
